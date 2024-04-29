@@ -1,19 +1,10 @@
 name: Auto Assign
 on:
-  issues:
-    types: [opened]
-  pull_request:
-    types: [opened]
+  push:
+  
 jobs:
   run:
     runs-on: ubuntu-latest
-    permissions:
-      issues: write
-      pull-requests: write
     steps:
-    - name: 'Auto-assign issue'
-      uses: pozil/auto-assign-issue@v1
-      with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          assignees: jay8078
-          numOfAssignee: 1
+    - name: 'warn'
+      run: echo "::notice file=test.js::Coverage less than 80%"
