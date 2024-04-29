@@ -6,5 +6,8 @@ jobs:
   run:
     runs-on: ubuntu-latest
     steps:
+    - name: 'checkout'
+      uses: actions/checkout@v4
+      
     - name: 'warn'
-      run: echo "::warning file=test.js::Coverage less than 80%"
+      run: bash warning.sh
