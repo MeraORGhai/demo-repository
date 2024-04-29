@@ -7,4 +7,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 'warn'
-      run: echo "::notice file=test.js::Coverage less than 80%"
+      run: echo "::warning file=test.js::Coverage less than 80%"
