@@ -1,3 +1,5 @@
 #!/bin/bash
 
-echo "::warning file=test.js::Coverage less than 80%"
+file_name="hi.js"
+
+echo "::warning file=$file_name::Coverage less than 80%"
