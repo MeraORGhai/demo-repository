@@ -46,4 +46,3 @@ jobs:
           });
           console.log(data.status);
           return data.status;
-        if: steps.trigger-repob.outputs.id != null
