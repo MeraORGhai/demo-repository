@@ -25,7 +25,7 @@ jobs:
               owner: 'MeraORGhai',
               repo: 'actions-lib',
               workflow_id: 'trigger-me.yml',
-              ref: 'main',
+              ref: 'dev',
               inputs: {
                 param1: 'value1',
               }
