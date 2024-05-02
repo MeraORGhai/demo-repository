@@ -11,16 +11,15 @@ jobs:
   trigger-repob-workflow:
     runs-on: ubuntu-latest
     steps:
-      - uses: convictional/trigger-workflow-and-wait@v1.6.1
+      - uses: convictional/trigger-workflow-and-wait@v1.6.5
         with:
           owner: MeraORGhai
           repo: actions-lib
           github_token: ${{ secrets.PAT }}
-          #github_user: jayy
           workflow_file_name: trigger-me.yml
           ref: dev
           wait_interval: 10
-          client_payload: '{param1:hello}'
+          #client_payload: '{param1:hello}'
           propagate_failure: true
           trigger_workflow: true
           wait_workflow: true
