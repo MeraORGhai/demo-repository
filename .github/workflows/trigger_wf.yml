@@ -25,25 +25,29 @@ jobs:
               }
             })
 
-            const workflowRunId = workflowDispatchResponse.data.id
-            console.log(`Triggered workflow run ID: ${workflowRunId}`)
+            if (workflowDispatchResponse.data && workflowDispatchResponse.data.id) {
+              const workflowRunId = workflowDispatchResponse.data.id
+              console.log(`Triggered workflow run ID: ${workflowRunId}`)
 
-            // Wait for the triggered workflow to complete
-            while (true) {
-              const workflowRunStatusResponse = await github.rest.actions.getWorkflowRun({
-                owner: 'MeraORGhai',
-                repo: 'actions-lib',
-                run_id: workflowRunId
-              })
-              const workflowRunStatus = workflowRunStatusResponse.data.status
-              console.log(`Workflow run status: ${workflowRunStatus}`)
+              // Wait for the triggered workflow to complete
+              while (true) {
+                const workflowRunStatusResponse = await github.rest.actions.getWorkflowRun({
+                  owner: 'MeraORGhai',
+                  repo: 'actions-lib',
+                  run_id: workflowRunId
+                })
+                const workflowRunStatus = workflowRunStatusResponse.data.status
+                console.log(`Workflow run status: ${workflowRunStatus}`)
 
-              if (workflowRunStatus === 'completed') {
-                break
+                if (workflowRunStatus === 'completed') {
+                  break
+                }
+
+                // Wait for 10 seconds before checking again
+                await new Promise(resolve => setTimeout(resolve, 10000))
               }
 
-              // Wait for 10 seconds before checking again
-              await new Promise(resolve => setTimeout(resolve, 10000))
+              console.log(`Workflow run concluded with status: ${workflowRunStatusResponse.data.conclusion}`)
+            } else {
+              console.log('Failed to trigger workflow or get workflow run ID')
             }
-
-            console.log(`Workflow run concluded with status: ${workflowRunStatusResponse.data.conclusion}`)
