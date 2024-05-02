@@ -2,10 +2,10 @@
 name: Trigger Repo B GitHub workflow
 on:
   push:
-  workflow_run:
-    workflows: [trigger-me] # Name of GitHub workflow to trigger in target repository
-    types:
-      - completed
+  # workflow_run:
+  #   workflows: [trigger-me] # Name of GitHub workflow to trigger in target repository
+  #   types:
+  #     - completed
 jobs:
   Hello:
     runs-on: ubuntu-latest
@@ -30,11 +30,19 @@ jobs:
                 param1: 'value1',
               }
             })
-  
-  Get_status:
-    if: github.event.workflow_run.conclusion == 'success' # Run only when workflow run has succeeded, i.e. all jobs have succeeded
-    runs-on: ubuntu-latest
-    steps:
-      - name: Print status 
-        run: echo ${{ github.event.workflow_run.conclusion }}
+            const runId = response.data.id; // Extracting the ID of the triggered workflow run
+            core.setOutput('triggered_run_id', runId); // Setting the output to be used in subsequent steps
+
+      - name: Get Status of Triggered Job
+        id: get_job_status
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.PAT }}
+          script: |
+            const response = await github.rest.actions.getWorkflowRun({
+              owner: 'MeraORGhai',
+              repo: 'actions-lib',
+              run_id: ${{ steps.trigger-repob-workflow.outputs.triggered_run_id }}
+            });
+            console.log(response.data.status);
     
