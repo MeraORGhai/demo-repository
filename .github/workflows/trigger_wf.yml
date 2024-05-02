@@ -1,0 +1,25 @@
+# trigger-repob-workflow.yml
+name: Trigger Repo B GitHub workflow
+on:
+  workflow_run:
+    workflows: [trigger-me] # Name of GitHub workflow to trigger in target repository
+    types:
+      - completed
+jobs:
+  trigger-repob-workflow:
+    if: github.event.workflow_run.conclusion == 'success' # Run only when workflow run has succeeded, i.e. all jobs have succeeded
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.PAT }} # Fine-grained GitHub PAT that was saved as repository secret
+          script: |
+            await github.rest.actions.createWorkflowDispatch({
+              owner: 'MeraORGhai',
+              repo: 'actions-lib',
+              workflow_id: 'trigger-me.yml',
+              ref: 'main',
+              inputs: {
+                param1: 'value1',
+              }
+            })
