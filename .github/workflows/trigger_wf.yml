@@ -1,27 +1,21 @@
-# trigger-repob-workflow.yml
 name: Trigger Repo B GitHub workflow
 on:
   push:
-  # workflow_run:
-  #   workflows: [trigger-me] # Name of GitHub workflow to trigger in target repository
-  #   types:
-  #     - completed
 jobs:
   Hello:
     runs-on: ubuntu-latest
     steps:
-      - name: Hello 
+      - name: Hello
         run: echo "hahah"
-        
+
   trigger-repob-workflow:
-    #if: github.event.workflow_run.conclusion == 'success' # Run only when workflow run has succeeded, i.e. all jobs have succeeded
     runs-on: ubuntu-latest
     steps:
       - uses: actions/github-script@v7.0.0
         with:
-          github-token: ${{ secrets.PAT }} # Fine-grained GitHub PAT that was saved as repository secret
+          github-token: ${{ secrets.PAT }}
           script: |
-            await github.rest.actions.createWorkflowDispatch({
+            const workflowDispatchResponse = await github.rest.actions.createWorkflowDispatch({
               owner: 'MeraORGhai',
               repo: 'actions-lib',
               workflow_id: 'trigger-me.yml',
@@ -30,3 +24,26 @@ jobs:
                 param1: 'value1',
               }
             })
+
+            const workflowRunId = workflowDispatchResponse.data.id
+            console.log(`Triggered workflow run ID: ${workflowRunId}`)
+
+            // Wait for the triggered workflow to complete
+            while (true) {
+              const workflowRunStatusResponse = await github.rest.actions.getWorkflowRun({
+                owner: 'MeraORGhai',
+                repo: 'actions-lib',
+                run_id: workflowRunId
+              })
+              const workflowRunStatus = workflowRunStatusResponse.data.status
+              console.log(`Workflow run status: ${workflowRunStatus}`)
+
+              if (workflowRunStatus === 'completed') {
+                break
+              }
+
+              // Wait for 10 seconds before checking again
+              await new Promise(resolve => setTimeout(resolve, 10000))
+            }
+
+            console.log(`Workflow run concluded with status: ${workflowRunStatusResponse.data.conclusion}`)
