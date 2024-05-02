@@ -19,7 +19,7 @@ jobs:
           workflow_file_name: trigger-me.yml
           ref: dev
           wait_interval: 10
-          client_payload: 'param1:hello'
+          client_payload: '{ "param": "value" }'
           propagate_failure: true
           trigger_workflow: true
           wait_workflow: true
