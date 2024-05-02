@@ -1,13 +1,7 @@
 name: Trigger Repo B GitHub workflow
 on:
   push:
-jobs:
-  Hello:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Hello 
-        run: echo "hahah"
-        
+jobs:   
   trigger-repob-workflow:
     runs-on: ubuntu-latest
     steps:
@@ -23,6 +17,13 @@ jobs:
           propagate_failure: true
           trigger_workflow: true
           wait_workflow: true
+
+  Hello:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Hello 
+        run: echo "hahah"
+
       # - uses: actions/github-script@v7.0.0
       #   with:
       #     github-token: ${{ secrets.PAT }}
