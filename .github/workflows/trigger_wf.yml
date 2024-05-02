@@ -21,28 +21,12 @@ jobs:
         with:
           github-token: ${{ secrets.PAT }} # Fine-grained GitHub PAT that was saved as repository secret
           script: |
-              const response = await github.rest.actions.createWorkflowDispatch({
+            await github.rest.actions.createWorkflowDispatch({
               owner: 'MeraORGhai',
               repo: 'actions-lib',
               workflow_id: 'trigger-me.yml',
-              ref: 'dev',
+              ref: 'main',
               inputs: {
                 param1: 'value1',
-                param2: 'value2'
-                // Add more parameters as needed
               }
-            });
-            console.log(response);
-            return response;
-
-      - name: Get Workflow Run Status
-        id: get-status
-        run: |
-          const runId = steps.trigger-repob.outputs.id;
-          const { data } = await github.rest.actions.getWorkflowRun({
-            owner: 'MeraORGhai',
-            repo: 'actions-lib',
-            run_id: runId
-          });
-          console.log(data.status);
-          return data.status;
+            })
