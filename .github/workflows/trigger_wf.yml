@@ -14,7 +14,7 @@ jobs:
         run: echo "hahah"
         
   trigger-repob-workflow:
-    if: github.event.workflow_run.conclusion == 'success' # Run only when workflow run has succeeded, i.e. all jobs have succeeded
+    #if: github.event.workflow_run.conclusion == 'success' # Run only when workflow run has succeeded, i.e. all jobs have succeeded
     runs-on: ubuntu-latest
     steps:
       - uses: actions/github-script@v6
