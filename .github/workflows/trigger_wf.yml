@@ -34,10 +34,9 @@ jobs:
             });
             console.log(response);
             return response;
-            
+
       - name: Get Workflow Run Status
         id: get-status
-        if: steps.trigger-repob.outputs.id != null
         run: |
           const runId = steps.trigger-repob.outputs.id;
           const { data } = await github.rest.actions.getWorkflowRun({
@@ -47,3 +46,4 @@ jobs:
           });
           console.log(data.status);
           return data.status;
+        if: steps.trigger-repob.outputs.id != null
