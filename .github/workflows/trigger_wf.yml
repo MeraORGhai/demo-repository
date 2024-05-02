@@ -1,6 +1,7 @@
 # trigger-repob-workflow.yml
 name: Trigger Repo B GitHub workflow
 on:
+  push:
   workflow_run:
     workflows: [trigger-me] # Name of GitHub workflow to trigger in target repository
     types:
